@@ -2,6 +2,6 @@ package com.apostassa.dominio.transacao;
 
 public interface RepositorioDeTransacaoApostaGanha {
 
-	void realizarTransacao(TransacaoSaque transacao);
+	void realizarTransacao(TransacaoApostaGanha transacao);
 	
 }

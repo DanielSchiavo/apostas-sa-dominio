@@ -11,11 +11,4 @@ public interface RepositorioDeCategoriaUser {
 
 	public List<Categoria> pegarTodasCategorias(String ordenadoPor, String tipo);
 
-
-	public void commitarTransacao();
-
-	public void rollbackTransacao();
-
-
-
 }

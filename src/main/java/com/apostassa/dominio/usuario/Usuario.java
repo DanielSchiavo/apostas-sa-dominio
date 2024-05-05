@@ -4,8 +4,8 @@ import com.apostassa.dominio.GeradorUUID;
 import com.apostassa.dominio.ValidacaoException;
 import com.apostassa.dominio.aposta.Aposta;
 import com.apostassa.dominio.transacao.TransacaoSaque;
-import com.apostassa.dominio.usuario.perfiljogador.PerfilJogador;
-import com.apostassa.dominio.usuario.perfiljogador.perfiljogo.PerfilJogo;
+import com.apostassa.dominio.usuario.perfilparticipante.PerfilParticipante;
+import com.apostassa.dominio.usuario.perfilparticipante.perfiljogo.PerfilJogo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.*;
@@ -19,15 +19,13 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(value = Include.NON_EMPTY)
+@JsonInclude(value = Include.NON_NULL)
 public class Usuario {
 	
 	private UUID id;
 	
-	@Getter(value = AccessLevel.NONE)
 	private CPF cpf;
 	
-	@Getter(value = AccessLevel.NONE)
 	private RG rg;
 	
 	private String imagemComprovanteIdentidadeFrente;
@@ -38,7 +36,6 @@ public class Usuario {
 	
 	private String sobrenome;
 	
-	@Getter(value = AccessLevel.NONE)
 	private Email email;
 	
 	private Celular celular;
@@ -53,7 +50,7 @@ public class Usuario {
 	
 	private Boolean confirmouIdentidade;
 	
-	private PerfilJogador perfilJogador;
+	private PerfilParticipante perfilJogador;
 	
 	@Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
@@ -69,23 +66,8 @@ public class Usuario {
 	
     @Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
-	private Set<Role> roles = new HashSet<>();
-	
-	public String getCpf() {
-		return cpf.getNumero();
-	}
-	
-	public String getRg() {
-		if (this.rg != null) {
-			return rg.getNumero();
-		}
-		return null;
-	}
+	private Set<RoleUsuario> roles = new HashSet<>();
 
-	public String getEmail() {
-		return email.getEndereco();
-	}
-	
 	public List<Aposta> getApostas() {
 		return Collections.unmodifiableList(this.apostas);
 	}
@@ -110,15 +92,15 @@ public class Usuario {
 		this.perfisJogos.add(perfilJogo);
 	}
 
-	public Set<Role> getRoles() {
+	public Set<RoleUsuario> getRoles() {
 		return Collections.unmodifiableSet(this.roles);
 	}
 
-	public void adicionarRole(Role role) {
+	public void adicionarRole(RoleUsuario role) {
 		this.roles.add(role);
 	}
 	
-	public void removerRole(Role role) {
+	public void removerRole(RoleUsuario role) {
 		this.roles.remove(role);
 	}
 	
@@ -217,12 +199,12 @@ public class Usuario {
 			return this;
 		}
 		
-		public UsuarioBuilder perfilJogador(PerfilJogador perfilJogador) {
+		public UsuarioBuilder perfilJogador(PerfilParticipante perfilJogador) {
 			this.usuario.setPerfilJogador(perfilJogador);
 			return this;
 		}
 		
-		public UsuarioBuilder adicionarRole(Role role) {
+		public UsuarioBuilder adicionarRole(RoleUsuario role) {
 			this.usuario.adicionarRole(role);
 			return this;
 		}
@@ -232,15 +214,15 @@ public class Usuario {
 				Usuario copiaUsuario = new Usuario();
 				copiaUsuario.setId(this.usuario.getId());
 				if (this.usuario.cpf != null) {
-					copiaUsuario.setCpf(new CPF(this.usuario.getCpf()));
+					copiaUsuario.setCpf(new CPF(this.usuario.getCpf().getNumero()));
 				}
 				if (this.usuario.rg != null) {
-					copiaUsuario.setRg(new RG(this.usuario.getRg()));
+					copiaUsuario.setRg(new RG(this.usuario.getRg().getNumero()));
 				}
 				copiaUsuario.setNome(this.usuario.getNome());
 				copiaUsuario.setSobrenome(this.usuario.getSobrenome());
 				if (this.usuario.email != null) {
-					copiaUsuario.setEmail(new Email(this.usuario.getEmail()));
+					copiaUsuario.setEmail(new Email(this.usuario.getEmail().getEndereco()));
 				}
 				if (this.usuario.celular != null) {
 					copiaUsuario.setCelular(this.usuario.getCelular());

@@ -20,11 +20,4 @@ public interface RepositorioDeCategoriaAdmin {
 
 	public List<Categoria> pegarTodasCategorias();
 
-
-	public void commitarTransacao();
-
-	public void rollbackTransacao();
-
-
-
 }

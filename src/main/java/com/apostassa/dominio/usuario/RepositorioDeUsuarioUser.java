@@ -5,7 +5,8 @@ import com.apostassa.dominio.ValidacaoException;
 import com.apostassa.dominio.usuario.exceptions.AlterarUsuarioException;
 import com.apostassa.dominio.usuario.exceptions.AutenticacaoException;
 import com.apostassa.dominio.usuario.exceptions.UsuarioNaoEncontradoException;
-import com.apostassa.dominio.usuario.perfiljogador.PerfilJogador;
+
+import java.math.BigDecimal;
 
 public interface RepositorioDeUsuarioUser {
 	
@@ -19,26 +20,20 @@ public interface RepositorioDeUsuarioUser {
 	
 	Usuario pegarDadosDoUsuarioPaginaInicial(String usuarioId) throws ValidacaoException;
 	
-	PerfilJogador pegarDadosDoUsuarioPerfilDeJogador(String usuarioId);
-	
 	Usuario pegarDadosDoUsuarioPessoais(String usuarioId) throws ValidacaoException;
-	
-	
-	
+
+	BigDecimal pegarSaldoPorUsuarioId(String usuarioId);
+
+
+
 	void usuarioAlteraSeusDadosPessoais(Usuario usuario) throws AlterarUsuarioException;
-	
-	void usuarioAlteraSeuPerfilDeJogador(Usuario usuario) throws AlterarUsuarioException;
-	
+
 	void usuarioAlteraSuaSenha(Usuario usuario) throws AlterarUsuarioException;
-	
-	
-	
+
+
+
 	boolean verificarSeUsuarioJaConfirmouIdentidade(String usuarioId) throws UsuarioNaoEncontradoException;
-	
-	
-	
-    void commitarTransacao();
-    
-    void rollbackTransacao();
-	
+
+
+	void novoSaldo(BigDecimal novoSaldo);
 }

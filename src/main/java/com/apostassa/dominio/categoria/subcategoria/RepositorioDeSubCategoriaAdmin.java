@@ -12,7 +12,7 @@ public interface RepositorioDeSubCategoriaAdmin {
 
 	public void deletarSubCategoria(String subCategoriaId) throws DeletarSubCategoriaException, ValidacaoException;
 
-	public void verificarSeNomeSubCategoriaJaExiste(String nome) throws ValidacaoException;
+	public boolean verificarSeNomeSubCategoriaJaExiste(String nome) throws ValidacaoException;
 
 
 	public SubCategoria pegarSubCategoriaPorId(String subCategoriaId) throws ValidacaoException;
@@ -22,10 +22,6 @@ public interface RepositorioDeSubCategoriaAdmin {
 	public List<SubCategoria> pegarTodasSubCategoriasPorCategoriaId(String string);
 
 
-
-	public void commitarTransacao();
-
-	public void rollbackTransacao();
-
+	public boolean verificarSeSubCategoriaIdExiste(String subCategoriaId) throws ValidacaoException;
 
 }

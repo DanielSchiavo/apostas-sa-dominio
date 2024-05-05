@@ -1,4 +1,4 @@
-package com.apostassa.dominio.usuario.perfiljogador.perfiljogo;
+package com.apostassa.dominio.usuario.perfilparticipante.perfiljogo;
 
 import com.apostassa.dominio.equipe.JogoEquipe;
 import com.apostassa.dominio.jogo.Jogo;

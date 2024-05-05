@@ -1,13 +1,13 @@
 package com.apostassa.dominio.transacao;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,6 +16,17 @@ import lombok.Setter;
 public class TransacaoDeposito {
 
 	private UUID usuarioId;
+
 	private BigDecimal valor;
-	private LocalDateTime dataEHora;
+
+	private LocalDateTime dataEHoraSolicitacao;
+
+	private StatusTransacao status;
+
+	private UUID moedaId;
+
+	private BigDecimal saldoAtual;
+
+	private LocalDateTime dataEHoraAprovacao;
+
 }

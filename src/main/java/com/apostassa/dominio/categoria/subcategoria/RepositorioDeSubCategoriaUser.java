@@ -12,11 +12,4 @@ public interface RepositorioDeSubCategoriaUser {
 
 	public List<SubCategoria> pegarTodasSubCategoriasPorCategoriaId(String string);
 
-
-
-	public void commitarTransacao();
-
-	public void rollbackTransacao();
-
-
 }

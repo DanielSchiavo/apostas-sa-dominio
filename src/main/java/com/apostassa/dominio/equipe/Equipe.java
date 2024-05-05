@@ -1,7 +1,7 @@
 package com.apostassa.dominio.equipe;
 
 import com.apostassa.dominio.jogo.Jogo;
-import com.apostassa.dominio.usuario.perfiljogador.perfiljogo.PerfilJogo;
+import com.apostassa.dominio.usuario.perfilparticipante.perfiljogo.PerfilJogo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

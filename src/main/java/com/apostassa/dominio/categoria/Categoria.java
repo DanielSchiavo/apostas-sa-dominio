@@ -16,7 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Categoria {
 	
 	private UUID id;
@@ -25,11 +24,11 @@ public class Categoria {
 	
 	private String icone;
 	
-	private LocalDateTime dataCriacao;
+	private LocalDateTime dataEHoraCriacao;
 	
 	private UUID criadoPor;
 	
-	private LocalDateTime dataUltimaAlteracao;
+	private LocalDateTime dataEHoraUltimaAlteracao;
 	
 	private UUID alteradorPor;
 	
@@ -52,6 +51,9 @@ public class Categoria {
 	private List<SubCategoria> subCategorias = new ArrayList<>();
 
 	public List<SubCategoria> getSubCategorias() {
+		if (this.subCategorias == null) {
+			this.subCategorias = new ArrayList<>();
+		}
 		return Collections.unmodifiableList(this.subCategorias);
 	}
 

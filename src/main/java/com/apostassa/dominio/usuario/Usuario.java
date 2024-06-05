@@ -1,13 +1,17 @@
 package com.apostassa.dominio.usuario;
 
-import com.apostassa.dominio.GeradorUUID;
 import com.apostassa.dominio.ValidacaoException;
 import com.apostassa.dominio.aposta.Aposta;
 import com.apostassa.dominio.transacao.TransacaoSaque;
 import com.apostassa.dominio.usuario.perfilparticipante.PerfilParticipante;
 import com.apostassa.dominio.usuario.perfilparticipante.perfiljogo.PerfilJogo;
+import com.apostassa.dominio.usuario.validation.IdadeMinima;
+import com.apostassa.dominio.usuario.validation.RegrasComumDeValidacao;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -20,28 +24,31 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(value = Include.NON_NULL)
+@Builder
 public class Usuario {
 	
-	private UUID id;
-	
-	private CPF cpf;
-	
+	@org.hibernate.validator.constraints.br.CPF
+	private String cpf;
+
 	private RG rg;
 	
 	private String imagemComprovanteIdentidadeFrente;
 	
 	private String imagemComprovanteIdentidadeVerso;
-	
+
 	private String nome;
 	
 	private String sobrenome;
-	
-	private Email email;
-	
+
+	@jakarta.validation.constraints.Email
+	private String email;
+
 	private Celular celular;
-	
+
+	@Size(min = RegrasComumDeValidacao.MIN_PASSWORD_LENGTH, message = RegrasComumDeValidacao.MESSAGE_MIN_PASSWORD_LENGTH)
 	private String senha;
-	
+
+	@IdadeMinima(value = RegrasComumDeValidacao.IDADE_MINIMA)
 	private LocalDate dataNascimento;
 	
 	private LocalDateTime dataCriacaoConta;
@@ -54,18 +61,22 @@ public class Usuario {
 	
 	@Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
+	@Singular
 	private List<Aposta> apostas = new ArrayList<>();
 	
 	@Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
+	@Singular
 	private List<TransacaoSaque> transacoes = new ArrayList<>();
 	
 	@Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
+	@Singular
 	private List<PerfilJogo> perfisJogos = new ArrayList<>();
 	
     @Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
+	@Singular
 	private Set<RoleUsuario> roles = new HashSet<>();
 
 	public List<Aposta> getApostas() {
@@ -75,7 +86,7 @@ public class Usuario {
 	public void adicionarAposta(Aposta aposta) {
 		this.apostas.add(aposta);
 	}
-	
+
 	public List<TransacaoSaque> getTransacoes() {
 		return Collections.unmodifiableList(this.transacoes);
 	}
@@ -99,147 +110,31 @@ public class Usuario {
 	public void adicionarRole(RoleUsuario role) {
 		this.roles.add(role);
 	}
-	
+
 	public void removerRole(RoleUsuario role) {
 		this.roles.remove(role);
 	}
-	
-	
-	public static UsuarioBuilder builder(GeradorUUID geradorUuid) {
-		return new UsuarioBuilder(geradorUuid);
-	}
-	
-	public static UsuarioBuilder builder() {
-		return new UsuarioBuilder();
-	}
-	
-	public static class UsuarioBuilder {
-		
-		private Usuario usuario;
-		
-		private GeradorUUID geradorUuid;
-		
-		public UsuarioBuilder(GeradorUUID geradorUuid) {
-			this.geradorUuid = geradorUuid;
-			this.usuario = new Usuario();
-			this.usuario.setId(this.geradorUuid.gerarUUID());
-		}
-		
-		public UsuarioBuilder() {
-			this.usuario = new Usuario();
-		}
-		
-		public UsuarioBuilder id(String id) {
-			this.usuario.setId(UUID.fromString(id));
-			return this;
-		}
-		
-		public UsuarioBuilder cpf(String cpf) throws ValidacaoException {
-			this.usuario.setCpf(new CPF(cpf));
-			return this;
-		}
-		
-		public UsuarioBuilder rg(String rg) throws ValidacaoException {
-			this.usuario.setRg(new RG(rg));
-			return this;
-		}
-		
-		public UsuarioBuilder nome(String nome) {
-			this.usuario.setNome(nome);
-			return this;
-		}
-		
-		public UsuarioBuilder sobrenome(String nome) {
-			this.usuario.setSobrenome(nome);
-			return this;
-		}
-		
-		public UsuarioBuilder email(String email) throws ValidacaoException {
-			this.usuario.setEmail(new Email(email));
-			return this;
-		}
-		
-		public UsuarioBuilder celular(String ddd, String numero) throws ValidacaoException {
-			this.usuario.setCelular(new Celular(ddd, numero));
-			return this;
-		}
-		
-		public UsuarioBuilder celular(Celular telefone) {
-			this.usuario.setCelular(telefone);
-			return this;
-		}
-		
-		public UsuarioBuilder senha(String senha) {
-			this.usuario.setSenha(senha);
-			return this;
-		}
-		
-		public UsuarioBuilder dataNascimento(LocalDate data) {
-			this.usuario.setDataNascimento(data);
-			return this;
-		}
-		
-		public UsuarioBuilder dataCriacaoConta(LocalDateTime data) {
-			this.usuario.setDataCriacaoConta(data);
-			return this;
-		}
-		
-		public UsuarioBuilder saldo(BigDecimal saldo) {
-			this.usuario.setSaldo(saldo);
-			return this;
-		}
-		
-		public UsuarioBuilder saldo(Double saldo) {
-			this.usuario.setSaldo(BigDecimal.valueOf(saldo));
-			return this;
-		}
-		
-		public UsuarioBuilder confirmouIdentidade(Boolean confirmou) {
-			this.usuario.setConfirmouIdentidade(confirmou);
-			return this;
-		}
-		
-		public UsuarioBuilder perfilJogador(PerfilParticipante perfilJogador) {
-			this.usuario.setPerfilJogador(perfilJogador);
-			return this;
-		}
-		
-		public UsuarioBuilder adicionarRole(RoleUsuario role) {
-			this.usuario.adicionarRole(role);
-			return this;
-		}
-		
-		public Usuario build() throws ValidacaoException {
-			if (this.usuario != null) {
-				Usuario copiaUsuario = new Usuario();
-				copiaUsuario.setId(this.usuario.getId());
-				if (this.usuario.cpf != null) {
-					copiaUsuario.setCpf(new CPF(this.usuario.getCpf().getNumero()));
-				}
-				if (this.usuario.rg != null) {
-					copiaUsuario.setRg(new RG(this.usuario.getRg().getNumero()));
-				}
-				copiaUsuario.setNome(this.usuario.getNome());
-				copiaUsuario.setSobrenome(this.usuario.getSobrenome());
-				if (this.usuario.email != null) {
-					copiaUsuario.setEmail(new Email(this.usuario.getEmail().getEndereco()));
-				}
-				if (this.usuario.celular != null) {
-					copiaUsuario.setCelular(this.usuario.getCelular());
-				}
-				copiaUsuario.setSenha(this.usuario.getSenha());
-				copiaUsuario.setDataNascimento(this.usuario.getDataNascimento());
-				copiaUsuario.setDataCriacaoConta(this.usuario.getDataCriacaoConta());
-				copiaUsuario.setSaldo(this.usuario.getSaldo());
-				copiaUsuario.setConfirmouIdentidade(this.usuario.getConfirmouIdentidade());
-				copiaUsuario.setPerfilJogador(this.usuario.getPerfilJogador());
-				if (this.usuario.roles.size() > 0) {
-					this.usuario.roles.forEach(role -> copiaUsuario.adicionarRole(role));
-				}
-				this.usuario = null;
-				return copiaUsuario;
+
+	private void validate() throws ValidacaoException {
+		Set<ConstraintViolation<Usuario>> violations = Validation.buildDefaultValidatorFactory().getValidator().validate(this);
+		if (!violations.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			for (ConstraintViolation<Usuario> violation : violations) {
+				sb.append(violation.getMessage()).append("\n");
 			}
-			return null;
+			throw new ValidacaoException(sb.toString());
 		}
 	}
+
+	public static UsuarioBuilder builder() {
+		return new UsuarioBuilder() {
+			@Override
+			public Usuario build() {
+				Usuario usuario = super.build();
+				usuario.validate();
+				return usuario;
+			}
+		};
+	}
+
 }

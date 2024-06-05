@@ -11,7 +11,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SubCategoria {
@@ -24,11 +23,11 @@ public class SubCategoria {
 	
 	private LocalDateTime dataCriacao;
 	
-	private UUID criadoPor;
+	private String criadoPorUsuarioCpf;
 	
 	private LocalDateTime dataUltimaAlteracao;
 	
-	private UUID alteradorPor;
+	private String alteradorPorUsuarioCpf;
 	
 	private Long numeroApostas;
 	
@@ -45,4 +44,8 @@ public class SubCategoria {
 	private Boolean ativo;
 	
 	private Categoria categoria;
+
+	public SubCategoria() {
+		this.id = UUID.randomUUID();
+	}
 }

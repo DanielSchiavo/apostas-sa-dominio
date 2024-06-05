@@ -2,7 +2,6 @@ package com.apostassa.dominio.transacao;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -12,10 +11,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class TransacaoSaque {
 
-	private UUID usuarioId;
+	private UUID id;
+
+	private String usuarioCpf;
 
 	private BigDecimal valor;
 
@@ -28,4 +28,8 @@ public class TransacaoSaque {
 	private BigDecimal saldoAtual;
 
 	private LocalDateTime dataEHoraAprovacao;
+
+	public TransacaoSaque() {
+		this.id = UUID.randomUUID();
+	}
 }

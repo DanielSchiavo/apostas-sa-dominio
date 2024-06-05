@@ -3,7 +3,6 @@ package com.apostassa.dominio.usuario.perfilparticipante;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,7 +11,7 @@ import java.util.UUID;
 @Builder
 public class PerfilParticipante {
 
-	private UUID usuarioId;
+	private String usuarioCpf;
 
 	private String foto;
 	
